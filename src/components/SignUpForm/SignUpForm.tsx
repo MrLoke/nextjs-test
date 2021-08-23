@@ -4,19 +4,25 @@ import Head from 'next/head'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
 import { auth } from '../../../firebase'
-import React from 'react'
-import Avatar from '@material-ui/core/Avatar'
-import Button from '@material-ui/core/Button'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import TextField from '@material-ui/core/TextField'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
-import Paper from '@material-ui/core/Paper'
-import Box from '@material-ui/core/Box'
-import Grid from '@material-ui/core/Grid'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import Typography from '@material-ui/core/Typography'
 import { useStyles } from './SignUpFormStyled'
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert'
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Paper,
+  Box,
+  Grid,
+  Typography,
+} from '@material-ui/core'
+
+const Alert = (props: AlertProps) => {
+  return <MuiAlert elevation={6} variant='filled' {...props} />
+}
 
 const SignupForm = () => {
   const [avatar, setAvatar] = useState(
@@ -36,7 +42,6 @@ const SignupForm = () => {
   const classes = useStyles()
 
   const onSubmit = async (value: any) => {
-    console.log(typeof value)
     try {
       setLoading(true)
       const userCredentials = await auth.createUserWithEmailAndPassword(
@@ -98,7 +103,7 @@ const SignupForm = () => {
                 autoFocus
               />
               {errors.userInitials && (
-                <span>{errors.userInitials.message}</span>
+                <Alert severity='error'>{errors.userInitials.message}</Alert>
               )}
               <TextField
                 {...register('email', {
@@ -118,7 +123,7 @@ const SignupForm = () => {
                 autoComplete='email'
                 autoFocus
               />
-              {errors.email && <span>{errors.email.message}</span>}
+              <Alert severity='error'>{errors.email.message}</Alert>
               <TextField
                 {...register('password', {
                   required: 'password is required',
@@ -137,7 +142,7 @@ const SignupForm = () => {
                 id='password'
                 autoComplete='current-password'
               />
-              {errors.password && <span>{errors.password.message}</span>}
+              <Alert severity='error'>{errors.password.message}</Alert>
               <TextField
                 {...register('password_repeat', {
                   validate: (value) =>
@@ -154,7 +159,7 @@ const SignupForm = () => {
                 autoComplete='current-password'
               />
               {errors.password_repeat && (
-                <span>{errors.password_repeat.message}</span>
+                <Alert severity='error'>{errors.password_repeat.message}</Alert>
               )}
               <TextField
                 {...register('avatar', {
@@ -175,7 +180,7 @@ const SignupForm = () => {
                 type='avatar'
                 id='avatar'
               />
-              {errors.avatar && <span>{errors.avatar.message}</span>}
+              <Alert severity='error'>{errors.avatar.message}</Alert>
               <FormControlLabel
                 control={<Checkbox value='remember' color='primary' />}
                 label='Remember me'

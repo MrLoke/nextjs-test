@@ -2,20 +2,27 @@ import { useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
-import Avatar from '@material-ui/core/Avatar'
-import Button from '@material-ui/core/Button'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import TextField from '@material-ui/core/TextField'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
-import Paper from '@material-ui/core/Paper'
-import Box from '@material-ui/core/Box'
-import Grid from '@material-ui/core/Grid'
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import Typography from '@material-ui/core/Typography'
 import { useStyles } from './SignInFormStyled'
 import { useRouter } from 'next/router'
 import { auth } from '../../../firebase'
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Paper,
+  Box,
+  Grid,
+  Typography,
+} from '@material-ui/core'
+
+const Alert = (props: AlertProps) => {
+  return <MuiAlert elevation={6} variant='filled' {...props} />
+}
 
 const SignInForm = () => {
   const [loading, setLoading] = useState(false)
@@ -25,7 +32,6 @@ const SignInForm = () => {
   const classes = useStyles()
 
   const onSubmit = async (value: any) => {
-    console.log(typeof value)
     auth
       .signInWithEmailAndPassword(value.email, value.password)
       .then(() => {
@@ -99,7 +105,9 @@ const SignInForm = () => {
                   <Link href='/signup'>{"Don't have an account? Sign Up"}</Link>
                 </Grid>
               </Grid>
-              <Box mt={5}>{error ? <span>{error}</span> : null}</Box>
+              <Box mt={5}>
+                {error ? <Alert severity='error'>{error}</Alert> : null}
+              </Box>
             </form>
           </div>
         </Grid>
