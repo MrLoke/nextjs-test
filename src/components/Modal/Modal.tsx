@@ -4,10 +4,12 @@ import TextField from '@material-ui/core/TextField'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
-import QueueIcon from '@material-ui/icons/Queue'
+import GroupAddIcon from '@material-ui/icons/GroupAdd'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
+import Typography from '@material-ui/core/Typography'
 import { useForm } from 'react-hook-form'
+import { AddChatContainer } from './ModalStyled'
 
 interface IChat {
   createChat: (value: any) => void
@@ -31,10 +33,12 @@ const Modal = ({ createChat }: IChat) => {
 
   return (
     <>
-      <Button variant='outlined' color='primary' onClick={handleClickOpen}>
-        Add new chat
-        <QueueIcon fontSize='medium' />
-      </Button>
+      <AddChatContainer>
+        <Button variant='outlined' color='primary' onClick={handleClickOpen}>
+          Add new chat &nbsp;
+          <GroupAddIcon fontSize='medium' />
+        </Button>
+      </AddChatContainer>
       <form onSubmit={handleSubmit(createChat)}>
         <Dialog
           open={open}
@@ -43,8 +47,8 @@ const Modal = ({ createChat }: IChat) => {
           <DialogTitle id='form-dialog-title'>Add new chat</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              To subscribe to this website, please enter your email address
-              here. We will send updates occasionally.
+              Type user email to establish chat with user. If user doesn't exist
+              u can't chat with him.
             </DialogContentText>
             <TextField
               {...register('email', {
