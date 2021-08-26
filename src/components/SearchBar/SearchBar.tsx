@@ -1,18 +1,24 @@
 import SearchIcon from '@material-ui/icons/Search'
-import { SearchUserContainer, SearchInput } from './SearchBarStyled'
+import { useStyles } from './SearchBarStyled'
+import { InputBase } from '@material-ui/core'
 
 const SearchBar = () => {
+  const classes = useStyles()
+
   return (
-    <SearchUserContainer>
-      <SearchInput
-        type='search'
-        placeholder='Search user...'
-        // onChange={(e) => setSearchingUser(e.target.value.toLowerCase())}
+    <div className={classes.search}>
+      <div className={classes.searchIcon}>
+        <SearchIcon />
+      </div>
+      <InputBase
+        placeholder='Search…'
+        classes={{
+          root: classes.inputRoot,
+          input: classes.inputInput,
+        }}
+        inputProps={{ 'aria-label': 'search' }}
       />
-      <SearchIcon>
-        <SearchIcon fontSize='medium' />
-      </SearchIcon>
-    </SearchUserContainer>
+    </div>
   )
 }
 
