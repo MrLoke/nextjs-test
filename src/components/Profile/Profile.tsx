@@ -1,17 +1,18 @@
-import { useContext } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import PersonIcon from '@material-ui/icons/Person'
-import EmailIcon from '@material-ui/icons/Email'
 import EditIcon from '@material-ui/icons/Edit'
 import IconButton from '@material-ui/core/IconButton'
+import Button from '@material-ui/core/Button'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
+import Typography from '@material-ui/core/Typography'
+import DeleteIcon from '@material-ui/icons/Delete'
 import { auth } from '../../../firebase'
 import {
   Container,
+  StyledAvatar,
   UserInfo,
-  Avatar,
-  DisplayName,
   EditProfile,
+  ProfileLabel,
+  DisplayName,
 } from './ProfileStyled'
 
 const UserProfile = () => {
@@ -20,21 +21,38 @@ const UserProfile = () => {
   return (
     <Container>
       <UserInfo>
-        <Avatar src={user?.photoURL || ''} alt={`${user?.photoURL} avatar`} />
-        <DisplayName>
-          <EmailIcon fontSize='large' /> {user?.email}
-        </DisplayName>
-        <DisplayName>
-          <PersonIcon fontSize='large' /> {user?.displayName}
-        </DisplayName>
+        <StyledAvatar
+          src={user?.photoURL || ''}
+          alt={`${user?.photoURL} avatar`}
+        />
+        <ProfileLabel>
+          <Typography variant='h5' gutterBottom>
+            {user?.displayName}
+          </Typography>
+        </ProfileLabel>
+        <ProfileLabel>
+          <Typography variant='h5' gutterBottom>
+            {user?.email}
+          </Typography>
+        </ProfileLabel>
       </UserInfo>
       <EditProfile>
-        <IconButton color='inherit' edge='start'>
-          <EditIcon fontSize='large' /> Edit profile
-        </IconButton>
-        <IconButton color='inherit' edge='start'>
-          <DeleteForeverIcon fontSize='large' />
-        </IconButton>
+        <ProfileLabel>
+          <IconButton color='inherit' edge='start'>
+            <EditIcon fontSize='large' />
+          </IconButton>
+          <Typography variant='subtitle1' gutterBottom>
+            Edit profile
+          </Typography>
+        </ProfileLabel>
+        <ProfileLabel>
+          <Button
+            variant='contained'
+            color='secondary'
+            startIcon={<DeleteIcon />}>
+            Delete
+          </Button>
+        </ProfileLabel>
       </EditProfile>
     </Container>
   )

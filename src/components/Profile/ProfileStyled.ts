@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import Avatar from '@material-ui/core/Avatar'
 
 export const Container = styled.div`
   height: 100vh;
@@ -8,24 +9,19 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  border-bottom: 1px solid #ccc;
   padding: 1rem;
-  background-color: ${({ theme }) => theme.secondaryBg};
-  color: ${({ theme }) => theme.primaryText};
 `
 
 export const UserInfo = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
   flex-direction: column;
+  margin-bottom: 1rem;
 `
 
-export const Avatar = styled.img`
+export const StyledAvatar = styled(Avatar)`
   width: 8rem;
   height: 8rem;
-  border-radius: 50%;
-  object-fit: cover;
   margin-bottom: 1rem;
 `
 
@@ -39,6 +35,12 @@ export const DisplayName = styled.p`
   white-space: nowrap;
 `
 
+export const ProfileLabel = styled.div`
+  display: flex;
+  align-items: center;
+`
+
 export const EditProfile = styled.div`
   display: flex;
+  flex-direction: column;
 `

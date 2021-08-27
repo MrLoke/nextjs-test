@@ -12,12 +12,9 @@ export const theme = createTheme({
   },
   palette: {
     primary: {
-      light: 'rgb(83, 109, 254)',
-      main: 'rgb(61, 90, 254)',
-      dark: 'rgb(48, 79, 254)',
-    },
-    secondary: {
-      main: 'rgb(48, 79, 254)',
+      light: '#9fa8da',
+      main: '#3d5afe',
+      dark: '#283593',
     },
     error: {
       main: '#f44336',

@@ -1,4 +1,4 @@
-import { useState, ReactNode } from 'react'
+import { useState, useEffect } from 'react'
 import ProfileBar from 'components/ProfileBar/ProfileBar'
 import SearchBar from 'components/SearchBar/SearchBar'
 import Chat from 'components/Chat/Chat'
@@ -6,10 +6,7 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import { auth, db } from '../../../firebase'
 import { QueryDocumentSnapshot, DocumentData } from '@firebase/firestore-types'
 import firebase from 'firebase/app'
-import useWindowSize from 'hooks/useWindowSize'
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
-import QueueIcon from '@material-ui/icons/Queue'
-import IconButton from '@material-ui/core/IconButton'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import Divider from '@material-ui/core/Divider'
@@ -21,13 +18,18 @@ import { useCollection } from 'react-firebase-hooks/firestore'
 import { useRouter } from 'next/router'
 import Modal from 'components/Modal/Modal'
 
+// interface IChat {
+//   chatSnapshot:
+//     | firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>
+//     | undefined
+// }
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: '100%',
       height: '100vh',
       overflowY: 'scroll',
-      backgroundColor: theme.palette.background.paper,
     },
     inline: {
       display: 'inline',
@@ -37,15 +39,23 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Sidebar = () => {
   const [usersChat, setUsersChat] = useState<any>()
-  const [user, loading] = useAuthState(auth)
+  const [user] = useAuthState(auth)
   const classes = useStyles()
-  const router = useRouter()
 
-  const usersChatRef = db
-    .collection('chats')
-    .where('users', 'array-contains', user?.email)
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        const usersChatRef = db
+          .collection('chats')
+          .where('users', 'array-contains', user?.email)
 
-  const [chatSnapshot] = useCollection(usersChatRef)
+        setUsersChat(usersChatRef)
+      }
+    })
+    return () => unsubscribe()
+  }, [])
+
+  const [chatSnapshot] = useCollection(usersChat)
 
   const createChat = async (value: any) => {
     console.log(typeof value)
@@ -136,13 +146,6 @@ const Sidebar = () => {
           }
         />
       </ListItem>
-      {/* <SidebarContainer>
-        <ProfileBar createChat={createChat} />
-        <SearchBar />
-        {chatSnapshot?.docs.map((chat: QueryDocumentSnapshot<DocumentData>) => (
-          <Chat key={chat?.id} users={chat.data().users} id={chat.id} />
-        ))}
-      </SidebarContainer> */}
     </List>
   )
 }

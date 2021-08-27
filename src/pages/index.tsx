@@ -1,61 +1,101 @@
-import { useContext, useEffect } from 'react'
+import { useEffect } from 'react'
 import Head from 'next/head'
-// import Sidebar from 'components/Sidebar/Sidebar'
-// import UserProfile from 'components/UserProfile/UserProfile'
-import { useRouter } from 'next/router'
+import Sidebar from 'components/Sidebar/Sidebar'
+import Profile from 'components/Profile/Profile'
+import ChatHeader from 'components/ChatHeader/ChatHeader'
+import ProfileBar from 'components/ProfileBar/ProfileBar'
+import SearchBar from 'components/SearchBar/SearchBar'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import SignInForm from 'components/SignInForm/SignInForm'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { auth } from '../../firebase'
-import SignInForm from 'components/SignInForm/SignInForm'
+import { useCollection } from 'react-firebase-hooks/firestore'
+import { auth, db } from '../../firebase'
 import styled from 'styled-components'
 
 export default function Home() {
   const [user, loading] = useAuthState(auth)
-  const router = useRouter()
   const matches = useMediaQuery('(min-width:600px)')
+  console.log(user)
 
-  if (loading) {
-    return (
-      <Container>
-        <CircularProgress color='primary' />
-      </Container>
-    )
-  }
-  if (!user) return <SignInForm />
+  // if (!user || !user.email) return
+  // const usersChatRef = db
+  //   .collection('chats')
+  //   .where('users', 'array-contains', user?.email)
+
+  // const [chatSnapshot] = useCollection(usersChatRef)
+  // console.log(chatSnapshot)
+
+  useEffect(() => {
+    const ifLogged = () => {
+      if (loading) {
+        return (
+          <LoadingContainer>
+            <CircularProgress color='primary' />
+          </LoadingContainer>
+        )
+      }
+      if (!user) return <SignInForm />
+    }
+    ifLogged()
+  }, [])
 
   return (
     <>
       <Head>
         <title>Messanger</title>
       </Head>
-      <div>siema</div>
-      <button
-        onClick={() => {
-          router.push('/signin')
-          auth.signOut()
-        }}>
-        logout
-      </button>
-      <div>{user?.displayName}</div>
-      <div>{user?.email}</div>
-      <img src={user?.photoURL || ''} alt='' />
-      {/* {matches ? (
-        <Sidebar>
-          <></>
-        </Sidebar>
+      {matches ? (
+        <Container>
+          <SidebarContainer>
+            <ProfileBar />
+            <SearchBar />
+            <Sidebar />
+          </SidebarContainer>
+          <ProfileContainer>
+            {/* <ChatHeader userName={['siema']} /> */}
+            <Profile />
+          </ProfileContainer>
+        </Container>
       ) : (
-        <Sidebar>
-          <UserProfile />
-        </Sidebar>
-      )} */}
+        <Container>
+          <SidebarContainer>
+            <ProfileBar />
+            <SearchBar />
+            <Sidebar />
+          </SidebarContainer>
+        </Container>
+      )}
     </>
   )
 }
 
-const Container = styled.div`
+const LoadingContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+`
+
+const Container = styled.div`
+  display: flex;
+  height: 100vh;
+`
+
+const SidebarContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  @media (min-width: 600px) {
+    flex: 0.25;
+  }
+`
+
+const ProfileContainer = styled.div`
+  display: none;
+  @media (min-width: 600px) {
+    display: flex;
+    flex-direction: column;
+    flex: 0.75;
+  }
 `

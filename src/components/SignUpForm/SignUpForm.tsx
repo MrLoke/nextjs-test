@@ -123,7 +123,9 @@ const SignupForm = () => {
                 autoComplete='email'
                 autoFocus
               />
-              <Alert severity='error'>{errors.email.message}</Alert>
+              {errors.email && (
+                <Alert severity='error'>{errors.email.message}</Alert>
+              )}
               <TextField
                 {...register('password', {
                   required: 'password is required',
@@ -142,7 +144,9 @@ const SignupForm = () => {
                 id='password'
                 autoComplete='current-password'
               />
-              <Alert severity='error'>{errors.password.message}</Alert>
+              {errors.password && (
+                <Alert severity='error'>{errors.password.message}</Alert>
+              )}
               <TextField
                 {...register('password_repeat', {
                   validate: (value) =>
@@ -180,7 +184,9 @@ const SignupForm = () => {
                 type='avatar'
                 id='avatar'
               />
-              <Alert severity='error'>{errors.avatar.message}</Alert>
+              {errors.avatar && (
+                <Alert severity='error'>{errors.avatar.message}</Alert>
+              )}
               <FormControlLabel
                 control={<Checkbox value='remember' color='primary' />}
                 label='Remember me'
